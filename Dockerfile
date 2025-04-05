@@ -1,17 +1,37 @@
-FROM php:8.3-apache
+# Usa imagem oficial do PHP com Apache
+FROM php:8.1-apache
 
-RUN docker-php-ext-install pdo pdo_mysql
+# Instala extensões e dependências necessárias
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    curl \
+    git \
+    nano \
+    libzip-dev \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libpq-dev \
+    libmcrypt-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
 
-RUN a2enmod rewrite
+# Instala o Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
+# Copia os arquivos do projeto
 COPY . /var/www/html
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader
+# Define diretório de trabalho
+WORKDIR /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Permissões e configurações do Apache
+RUN chown -R www-data:www-data /var/www/html \
+    && a2enmod rewrite
+
+# Expõe a porta padrão do Apache
+EXPOSE 80
