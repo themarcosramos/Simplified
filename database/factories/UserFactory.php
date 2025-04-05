@@ -2,46 +2,44 @@
 
 namespace Database\Factories;
 
+use Faker\Provider\pt_BR\Company;
+use Faker\Provider\pt_BR\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
-    /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function definition(): array
     {
+        $this->faker->addProvider(new Person($this->faker));
+        $this->faker->addProvider(new Company($this->faker));
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'document' => rand() % 2 == 0 ? $this->faker->cnpj(false) : $this->faker->cpf(false),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'remember_token' => Str::random(10),
-            'cpf_cnpj' => fake()->numerify('###########'),
-            'is_merchant' => fake()->boolean(20),
-            'balance' => 0
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
+     *
+     * @return Factory
      */
-    public function unverified(): static
+    public function unverified(): Factory
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
     }
 }

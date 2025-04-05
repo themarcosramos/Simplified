@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
+use App\Models\Traits\ExtractTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, ExtractTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -19,10 +22,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'document',
         'password',
-        'cpf_cnpj',
-        'balance',
-        'is_merchant',
     ];
 
     /**
@@ -36,25 +37,16 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
-    public function transactionsAsPayer()
+    public function wallet (): morphOne
     {
-        return $this->hasMany(Transaction::class, 'payer_id');
-    }
-
-    public function transactionsAsPayee()
-    {
-        return $this->hasMany(Transaction::class, 'payee_id');
+        return $this->morphOne(Wallet::class, 'personable');
     }
 }

@@ -1,26 +1,22 @@
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "8000:80"
-    environment:
-      DB_HOST: db
-      DB_DATABASE: picpay_simplificado
-      DB_USERNAME: root
-      DB_PASSWORD: picpay
-    volumes:
-      - .:/var/www/html
-    depends_on:
-      - db
+version: "3.5"
 
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: picpay_simplificado
-      MYSQL_ROOT_PASSWORD: picpay
-    volumes:
-      - dbdata:/var/lib/mysql
+services:
+    db:
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_DATABASE: "transferdb"
+            MYSQL_USER: "transfer"
+            MYSQL_PASSWORD: "123123123"
+            MYSQL_ROOT_PASSWORD: "123123123"
+        ports:
+            # <Port exposed> : < MySQL Port running inside container>
+            - "3306:3306"
+        expose:
+            - "3306"
+        volumes:
+            - developmentdb:/var/lib/MySQL
+            - ./.docker/provision/mysql/init:/docker-entrypoint-initdb.d
 
 volumes:
-  dbdata:
+    developmentdb:
