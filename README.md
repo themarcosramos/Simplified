@@ -68,7 +68,7 @@ Confirme se existem os bancos:
 Depois, saia do MySQL com:
 
 ```sql
-exit();
+exit;
 ```
 
 ### 10. Gere a chave da aplicação
@@ -113,6 +113,16 @@ php artisan config:clear
 php artisan test --env=testing
 ```
 ---
+
+## Lista de Testes Automatizados
+
+###  [Planejamento de testes](doc/tests/listaTestes.md)
+
+### Screenshot dos teste 
+![plot](doc/tests/Screenshot/Screenshot1.png)
+
+![plot](doc/tests/Screenshot/Screenshot2.png)
+
 
 ## Diagrama
 ### Arquitetura de software
