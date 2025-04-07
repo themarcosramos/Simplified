@@ -14,13 +14,13 @@ Siga os passos abaixo para configurar e executar o projeto localmente:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/themarcosramos/Simplified
+git clone https://github.com/themarcosramos/TransfersAPI
 ```
 
 ### 2. Acesse a pasta do projeto
 
 ```bash
-cd Simplified/
+cd TransfersAPI/
 ```
 
 ### 3. Suba os containers com Docker
