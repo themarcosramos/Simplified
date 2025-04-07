@@ -143,7 +143,7 @@ php artisan test --env=testing
 ![plot](doc/imag/databaseDiagram.png)
 
 
-## Pacotes do Laravel usa
+## Pacotes do Laravel usados
 
 ### [Passport](https://laravel.com/docs/8.x/passport)
 ### [Permission](https://spatie.be/docs/laravel-permission/v4/prerequisites)
