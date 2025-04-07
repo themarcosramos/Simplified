@@ -12,7 +12,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-
     /**
      * Login user and create token
      *
@@ -67,15 +66,15 @@ class AuthService
 
     /**
      * @param $user
-     * @param null $remember_me
+     * @param null $rememberMe
      * @return array
      */
-    public function getLoggedUser ($user, $remember_me = null): array
+    public function getLoggedUser ($user, $rememberMe = null): array
     {
         $tokenResult = $user->createToken('Transfers');
         $token       = $tokenResult->token;
 
-        if ($remember_me)
+        if ($rememberMe)
             $token->expires_at = Carbon::now()->addWeeks();
 
         $token->save();

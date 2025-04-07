@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Http;
  */
 class RequestAuthorizeTransaction
 {
-
     /**
      * @return bool
      */
@@ -22,12 +21,10 @@ class RequestAuthorizeTransaction
             $body = json_decode($response->body());
 
             return (isset($body->message) && $body->message == 'Autorizado');
-
-        } else {
-            // TODO: Notify reason for error to admins
-            return false;
         }
 
+        // TODO: Notify reason for error to admins
+        return false;
     }
 
 }

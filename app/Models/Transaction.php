@@ -10,7 +10,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['payer_id', 'payee_id', 'amount', 'scheduling_date', 'description'];
+    protected $fillable = ['wallet_payer_id', 'wallet_payee_id', 'amount', 'scheduling_date', 'description'];
 
     public function ownerable (): BelongsTo
     {
@@ -24,21 +24,21 @@ class Transaction extends Model
 
     public function payer (): BelongsTo
     {
-        return $this->belongsTo(Wallet::class, 'payer_id');
+        return $this->belongsTo(Wallet::class, 'wallet_payer_id');
     }
 
     public function payee (): BelongsTo
     {
-        return $this->belongsTo(Wallet::class, 'payee_id');
+        return $this->belongsTo(Wallet::class, 'wallet_payee_id');
     }
 
     public function checkBalance ()
     {
-        $available_balance = $this->payer->available_balance;
+        $availableBalance = $this->payer->available_balance;
 
-        $transfer_amount = $this->amount + $this->intermediation_amount;
+        $transferAmount = $this->amount + $this->intermediation_amount;
 
-        if ($transfer_amount > $available_balance) {
+        if ($transferAmount > $availableBalance) {
             abort(406, 'Insufficient balance');
         }
     }

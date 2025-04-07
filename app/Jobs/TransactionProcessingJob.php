@@ -35,7 +35,6 @@ class TransactionProcessingJob implements ShouldQueue
      */
     public function handle ()
     {
-
         // Check if the transfer has already been processed
         if (!is_null($this->transaction->transaction_date) and TransactionEnum::STATUS['scheduled']) return;
 
@@ -67,23 +66,23 @@ class TransactionProcessingJob implements ShouldQueue
                     'current_value' => $walletPayee->available_balance
                 ]);
 
+                $this->transaction->save();
 
                 // Notify receipt of transaction
                 dispatch(new NotifyTransactionSuccessfulJob($this->transaction));
 
-            } else {
-
-                $walletPayer->incrementAvailableBalance($this->transaction->amount);
-                $walletPayer->decreaseBlockedBalance($this->transaction->amount);
-
-                $this->transaction->status = TransactionEnum::STATUS['unauthorized'];
-
-                // Notify payer about unauthorized transaction
-
+                return;
             }
 
-            $this->transaction->save();
+            $walletPayer->incrementAvailableBalance($this->transaction->amount);
+            $walletPayer->decreaseBlockedBalance($this->transaction->amount);
 
+            $this->transaction->status = TransactionEnum::STATUS['unauthorized'];
+
+            // Notify payer about unauthorized transaction
+
+
+            $this->transaction->save();
         });
     }
 }

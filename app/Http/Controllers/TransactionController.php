@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TransactionCollection;
 use App\Http\Resources\TransactionResource;
-use App\Models\Transaction;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
@@ -28,6 +27,22 @@ class TransactionController extends Controller
         $this->service = $service;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return TransactionCollection|JsonResponse
+     */
+    public function index (Request $request)
+    {
+        try {
+            $data = $this->service->setModelType($request->model_type)->setModelId($request->model_id)->index();
+            return new TransactionCollection($data);
+
+        } catch (\Exception $e) {
+            return $this->error('There was a problem processing the data, please try again later.');
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -44,9 +59,8 @@ class TransactionController extends Controller
         } catch (ValidationException $v) {
             return $this->error($v->errors(), $v->status);
         } catch (\BadMethodCallException $e) {
-            return $this->error($e->getMessage(), 403);
+            return $this->error('Resource unavailable', 403);
         }
-
     }
 
 }
