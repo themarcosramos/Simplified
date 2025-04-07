@@ -114,11 +114,35 @@ php artisan test --env=testing
 ```
 ---
 
-### 
+## Diagrama
+### Arquitetura de software
+![plot](doc/imag/software_architectural_diagram.drawio.png)
+
+##### [Arquitetura de software em xml](doc/xml/software_architectural_diagram.drawio.xml)
+
+### Classe 
+![plot](doc/imag/classDiagram.drawio.png)
+
+#####  [Classe em xml](doc/xml/ClassDiagram.drawio.xml)
+
+### Fluxo de processo
+![plot](doc/imag/process_flow_diagram.drawio.png)
+##### [Fluxo de processoem xml](doc/xml/process_flow_diagram.drawio.xml)
+
+### Banco de dados
+![plot](doc/imag/databaseDiagram.png)
 
 
-## 
+## Pacotes do Laravel usa
 
+### [Passport](https://laravel.com/docs/8.x/passport)
+### [Permission](https://spatie.be/docs/laravel-permission/v4/prerequisites)
+### [Auditing](http://www.laravel-auditing.com/)
+
+##  Setup do Postman para testes da API
+
+### [Collection](doc/postman/TransfersAPI.postman_collection.json)
+### [Environment](doc/postman/TransfersAPI.postman_environment.json)
 
 
 ## License
