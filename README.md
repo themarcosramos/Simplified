@@ -108,9 +108,10 @@ No container da aplicação:
 
 ```bash
 php artisan config:clear
+```
+```bash
 php artisan test --env=testing
 ```
-
 ---
 
 ### 
